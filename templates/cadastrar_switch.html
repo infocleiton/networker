@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastrar Switch{% endblock %}
+
+{% block content %}
+    <h1>Cadastrar Switch</h1>
+    <a href="{{ url_for('index') }}" class="btn btn-voltar">Voltar para a Página Inicial</a>
+
+    <!-- Formulário de Cadastro de Switches -->
+    <form method="POST" action="{{ url_for('cadastrar_switch') }}">
+        <h2>Cadastrar Novo Switch</h2>
+        <label for="nome">Nome do Switch:</label>
+        <input type="text" name="nome" id="nome" required>
+        <br>
+        <label for="ip">IP do Switch:</label>
+        <input type="text" name="ip" id="ip" required>
+        <br>
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <!-- Formulário de Exclusão de Switches -->
+    <form method="POST" action="{{ url_for('excluir_switch') }}">
+        <h2>Excluir Switches</h2>
+        {% for switch in switches %}
+            <div class="switch-item">
+                <label>
+                    <input type="checkbox" name="switches" value="{{ switch.id }}">
+                    {{ switch.nome }} ({{ switch.ip }})
+                </label>
+                <a href="{{ url_for('editar_switch', id=switch.id) }}" class="btn btn-editar">Editar</a>
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn-excluir">Excluir Selecionados</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+{% endblock %}

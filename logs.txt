@@ -1,0 +1,45 @@
+[2025-03-12 17:47:32] Executando comando no 10.11.16.230: configure terminal
+[2025-03-12 17:47:32] Saída do comando:
+[2025-03-12 17:47:32] Linux SP01SWSF20000 4.9.210 #1 SMP Debian 4.9.210-1+deb9u1 x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+
+
+-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+-*         Dell EMC  Network Operating System (OS10)           *-
+-*                                                             *-
+-* Copyright (c) 1999-2021 by Dell Inc. All Rights Reserved.   *-
+-*                                                             *-
+-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+
+This product is protected by U.S. and international copyright and
+intellectual property laws. Dell EMC and the Dell EMC logo are 
+trademarks of Dell Inc. in the United States and/or other 
+jurisdictions. All other marks and names mentioned herein may be 
+trademarks of their respective companies.
+
+%Warning : Default password for linuxadmin account should be changed to secure the system.
+[2025-03-12 17:47:32] --------------------------------------------------
+[2025-03-12 17:47:32] Executando comando no 10.11.16.230: hostname SP01SWSF02
+[2025-03-12 17:47:32] Saída do comando:
+[2025-03-12 17:47:32] configure terminal
+hostname SP01SWSF02
+SP01SWSF20000# configure terminal
+[2025-03-12 17:47:32] --------------------------------------------------
+[2025-03-12 17:47:32] Executando comando no 10.11.16.230: exit
+[2025-03-12 17:47:32] Saída do comando:
+[2025-03-12 17:47:32] SP01SWSF20000(config)# hostname SP01SWSF02
+exit
+[2025-03-12 17:47:32] --------------------------------------------------
+[2025-03-12 17:47:32] Executando comando no 10.11.16.230: wr
+[2025-03-12 17:47:33] Saída do comando:
+[2025-03-12 17:47:33] wr
+SP01SWSF02(config)# exit
+SP01SWSF02# write memory
+[2025-03-12 17:47:33] --------------------------------------------------
+[2025-03-12 17:47:33] Conexão SSH com 10.11.16.230 fechada.

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Firewall{% endblock %}
+
+{% block content %}
+    <h1>Editar Firewall</h1>
+    <a href="{{ url_for('cadastrar') }}" class="btn btn-voltar">Voltar</a>
+
+    <form method="POST">
+        <label for="nome">Nome do Firewall:</label>
+        <input type="text" name="nome" id="nome" value="{{ firewall.nome }}" required>
+        <br>
+        <label for="ip">IP do Firewall:</label>
+        <input type="text" name="ip" id="ip" value="{{ firewall.ip }}" required>
+        <br>
+        <button type="submit" class="btn">Salvar Alterações</button>
+    </form>
+{% endblock %}

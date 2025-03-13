@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* Estilo para o efeito de fade-out */
+        .fade-out {
+            opacity: 1;
+            transition: opacity 1s ease-out; /* Transição de 1 segundo */
+        }
+
+        .fade-out.hide {
+            opacity: 0; /* Esconde o elemento */
+        }
+
+        /* Estilo para as mensagens flash */
+        #flash-messages {
+            list-style-type: none;
+            padding: 0;
+            margin: 0 0 20px 0; /* Espaçamento abaixo das mensagens */
+        }
+
+        #flash-messages li {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            background-color: #f8d7da; /* Cor de fundo para mensagens de erro */
+            color: #721c24; /* Cor do texto */
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <!-- Inclui o cabeçalho -->
+    {% include 'header.html' %}
+
+    <div class="container">
+        <!-- Bloco de mensagens flash -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul id="flash-messages" class="fade-out">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Script para remover mensagens flash com efeito de fade-out -->
+    <script>
+        // Função para remover mensagens flash com efeito de fade-out
+        function removeFlashMessages() {
+            const flashMessages = document.getElementById('flash-messages');
+            if (flashMessages) {
+                setTimeout(() => {
+                    flashMessages.classList.add('hide'); // Aplica o efeito de fade-out
+                    setTimeout(() => {
+                        flashMessages.remove(); // Remove o elemento após o fade-out
+                    }, 1000); // Remove após 1 segundo (tempo da transição)
+                }, 2000); // Inicia o fade-out após 2 segundos
+            }
+        }
+
+        // Executa a função quando a página é carregada
+        window.onload = removeFlashMessages;
+    </script>
+
+    <!-- Script para logout automático após 1 hora de inatividade -->
+    <script>
+        // Tempo de inatividade em milissegundos (1 hora = 3600000 ms)
+        const inactivityTime = 3600000;
+
+        let inactivityTimer;
+
+        // Função para redirecionar para a página de login
+        function logout() {
+            window.location.href = "{{ url_for('logout') }}";
+        }
+
+        // Reinicia o timer de inatividade
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(logout, inactivityTime);
+        }
+
+        // Monitora eventos de interação do usuário
+        document.addEventListener('mousemove', resetInactivityTimer);
+        document.addEventListener('keypress', resetInactivityTimer);
+        document.addEventListener('click', resetInactivityTimer);
+
+        // Inicia o timer quando a página é carregada
+        resetInactivityTimer();
+    </script>
+</body>
+</html>

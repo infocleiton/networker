@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Switch{% endblock %}
+
+{% block content %}
+    <h1>Editar Switch</h1>
+    <a href="{{ url_for('cadastrar_switch') }}" class="btn btn-voltar">Voltar</a>
+
+    <form method="POST">
+        <label for="nome">Nome do Switch:</label>
+        <input type="text" name="nome" id="nome" value="{{ switch.nome }}" required>
+        <br>
+        <label for="ip">IP do Switch:</label>
+        <input type="text" name="ip" id="ip" value="{{ switch.ip }}" required>
+        <br>
+        <button type="submit" class="btn">Salvar Alterações</button>
+    </form>
+{% endblock %}

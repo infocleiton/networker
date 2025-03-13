@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Logs de Execução{% endblock %}
+
+{% block content %}
+    <h1>Logs de Execução</h1>
+
+    <!-- Container para os logs -->
+    <div class="logs-container">
+        <pre>
+            {% for log in logs %}
+                {{ log }}
+            {% endfor %}
+        </pre>
+    </div>
+
+    <!-- Botão "Voltar" fixo -->
+    <a href="{{ url_for('index') }}" class="btn btn-voltar btn-fixo">Voltar</a>
+
+    <!-- Botão "Limpar Logs" fixo (apenas para administradores) -->
+    {% if session.get('perfil') == 'admin' %}
+        <button onclick="limparLogs()" class="btn btn-limpar-logs btn-fixo">Limpar Logs</button>
+    {% endif %}
+
+    <!-- JavaScript para limpar logs -->
+    <script>
+        function limparLogs() {
+            if (confirm("Tem certeza que deseja limpar todos os logs? Esta ação não pode ser desfeita.")) {
+                fetch("{{ url_for('limpar_logs') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erro na requisição.");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message); // Exibe a mensagem de sucesso
+                        window.location.reload(); // Recarrega a página para atualizar a lista de logs
+                    } else {
+                        alert(data.message); // Exibe a mensagem de erro
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro:", error);
+                    alert("Erro ao limpar logs. Verifique o console para mais detalhes.");
+                });
+            }
+        }
+    </script>
+{% endblock %}

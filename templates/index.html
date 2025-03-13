@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}Executar Comandos{% endblock %}
+
+{% block content %}
+    <h1>Executar Comandos</h1>
+    <a href="{{ url_for('logout') }}" class="btn btn-voltar">Logout</a>
+
+    <!-- Abas -->
+    <div class="tabs">
+        <button class="tablink" onclick="openTab(event, 'firewalls')">Firewalls</button>
+        <button class="tablink" onclick="openTab(event, 'switches')">Switches</button>
+    </div>
+
+    <!-- Conteúdo da aba Firewalls -->
+    <div id="firewalls" class="tabcontent">
+        <!-- Botões de cadastro para Firewalls (apenas para administradores) -->
+        {% if session.get('perfil') == 'admin' %}
+            <div class="cadastro-buttons">
+                <a href="{{ url_for('cadastrar') }}" class="btn btn-cadastrar">Cadastrar Firewall</a>
+                <a href="{{ url_for('cadastrar_comandos') }}" class="btn btn-cadastrar">Cadastrar Comandos Firewall</a>
+            </div>
+        {% endif %}
+
+        <!-- Formulário de Execução de Comandos para Firewalls -->
+        <form method="POST" action="{{ url_for('index') }}" id="executar-comandos-form">
+            <h2>Selecione os Firewalls para Executar Comandos</h2>
+            <div class="firewall-grid">
+                {% for firewall in firewalls %}
+                    <div class="firewall-item">
+                        <label>
+                            <input type="checkbox" name="firewalls" value="{{ firewall.ip }}">
+                            {{ firewall.nome }} ({{ firewall.ip }})
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <h2>Selecione o Conjunto de Comandos</h2>
+            <select name="comandos" id="comandos" required>
+                {% for comando in comandos %}
+                    <option value="{{ comando.comandos }}">{{ comando.nome }}</option>
+                {% endfor %}
+            </select>
+            <br>
+
+            <h2>Credenciais</h2>
+            <label for="username">Usuário:</label>
+            <input type="text" name="username" id="username" required>
+            <br>
+            <label for="password">Senha:</label>
+            <input type="password" name="password" id="password" required>
+            <br>
+
+            <button type="submit" id="executar-btn" class="btn">Executar Comandos</button>
+
+            <!-- Barra de carregamento -->
+            <div id="loading-bar" style="display: none;">
+                <div class="loading-bar"></div>
+                <p>Executando comandos...</p>
+            </div>
+        </form>
+    </div>
+
+    <!-- Conteúdo da aba Switches -->
+    <div id="switches" class="tabcontent" style="display: none;">
+        <!-- Botões de cadastro para Switches (apenas para administradores) -->
+        {% if session.get('perfil') == 'admin' %}
+            <div class="cadastro-buttons">
+                <a href="{{ url_for('cadastrar_switch') }}" class="btn btn-cadastrar">Cadastrar Switch</a>
+                <a href="{{ url_for('cadastrar_comandos_switch') }}" class="btn btn-cadastrar">Cadastrar Comandos Switch</a>
+            </div>
+        {% endif %}
+
+        <!-- Formulário de Execução de Comandos para Switches -->
+        <form method="POST" action="{{ url_for('index') }}" id="executar-comandos-switch-form">
+            <h2>Selecione os Switches para Executar Comandos</h2>
+            <div class="switch-grid">
+                {% for switch in switches %}
+                    <div class="switch-item">
+                        <label>
+                            <input type="checkbox" name="switches" value="{{ switch.ip }}">
+                            {{ switch.nome }} ({{ switch.ip }})
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <h2>Selecione o Conjunto de Comandos</h2>
+            <select name="comandos_switch" id="comandos_switch" required>
+                {% for comando in comandos_switch %}
+                    <option value="{{ comando.comandos }}">{{ comando.nome }}</option>
+                {% endfor %}
+            </select>
+            <br>
+
+            <h2>Credenciais</h2>
+            <label for="username_switch">Usuário:</label>
+            <input type="text" name="username_switch" id="username_switch" required>
+            <br>
+            <label for="password_switch">Senha:</label>
+            <input type="password" name="password_switch" id="password_switch" required>
+            <br>
+
+            <button type="submit" id="executar-btn-switch" class="btn">Executar Comandos</button>
+
+            <!-- Barra de carregamento -->
+            <div id="loading-bar-switch" style="display: none;">
+                <div class="loading-bar"></div>
+                <p>Executando comandos...</p>
+            </div>
+        </form>
+    </div>
+
+    <!-- Botão "Logs" fixo -->
+    <a href="{{ url_for('logs') }}" class="btn btn-logs btn-fixo">Logs</a>
+
+    <!-- JavaScript para as abas -->
+    <script>
+        function openTab(evt, tabName) {
+            const tabcontent = document.getElementsByClassName("tabcontent");
+            for (let i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            const tablinks = document.getElementsByClassName("tablink");
+            for (let i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        // Abre a aba Firewalls por padrão
+        document.getElementsByClassName("tablink")[0].click();
+    </script>
+
+    <!-- JavaScript para a barra de carregamento -->
+    <script>
+        document.getElementById('executar-comandos-form').addEventListener('submit', function() {
+            // Exibe a barra de carregamento
+            document.getElementById('loading-bar').style.display = 'block';
+            document.getElementById('executar-btn').disabled = true; // Desabilita o botão
+        });
+
+        document.getElementById('executar-comandos-switch-form').addEventListener('submit', function() {
+            // Exibe a barra de carregamento
+            document.getElementById('loading-bar-switch').style.display = 'block';
+            document.getElementById('executar-btn-switch').disabled = true; // Desabilita o botão
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Comando{% endblock %}
+
+{% block content %}
+    <h1>Editar Comando</h1>
+    <a href="{{ url_for('cadastrar_comandos') }}" class="btn btn-voltar">Voltar</a>
+
+    <form method="POST">
+        <label for="nome">Nome do Comando:</label>
+        <input type="text" name="nome" id="nome" value="{{ comando.nome }}" required>
+        <br>
+        <label for="comandos">Comandos (um por linha):</label>
+        <textarea name="comandos" id="comandos" rows="5" required>{{ comando.comandos }}</textarea>
+        <br>
+        <button type="submit" class="btn">Salvar Alterações</button>
+    </form>
+{% endblock %}

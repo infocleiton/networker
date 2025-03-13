@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastrar Comandos{% endblock %}
+
+{% block content %}
+    <h1>Cadastrar Comandos</h1>
+    <a href="{{ url_for('index') }}" class="btn btn-voltar">Voltar para a Página Inicial</a>
+
+    <!-- Formulário de Cadastro de Comandos -->
+    <form method="POST" action="{{ url_for('cadastrar_comandos') }}">
+        <h2>Cadastrar Novo Conjunto de Comandos</h2>
+        <label for="nome">Nome do Conjunto de Comandos:</label>
+        <input type="text" name="nome" id="nome" required>
+        <br>
+        <label for="comandos">Comandos (um por linha):</label>
+        <textarea name="comandos" id="comandos" rows="5" required></textarea>
+        <br>
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <!-- Formulário de Exclusão de Comandos -->
+    <form method="POST" action="{{ url_for('excluir_comandos') }}">
+        <h2>Excluir Conjuntos de Comandos</h2>
+        {% for comando in comandos %}
+            <div class="comando-item">
+                <label>
+                    <input type="checkbox" name="comandos" value="{{ comando.id }}">
+                    {{ comando.nome }}
+                </label>
+                <a href="{{ url_for('editar_comando', id=comando.id) }}" class="btn btn-editar">Editar</a>
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn-excluir">Excluir Selecionados</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+{% endblock %}
